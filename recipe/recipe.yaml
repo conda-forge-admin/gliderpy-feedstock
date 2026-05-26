@@ -1,0 +1,54 @@
+schema_version: 1
+
+context:
+  python_min: "3.10"
+  version: "1.1.0"
+
+package:
+  name: gliderpy
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/g/gliderpy/gliderpy-${{ version }}.tar.gz
+  sha256: 671cf0523bebe156977306e4012646b20cefb2fb8f4ea816d02f839ec1accbd5
+
+build:
+  number: 0
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - setuptools >=42
+    - setuptools-scm >=3.4
+    - wheel
+    - pip
+  run:
+    - python >=${{ python_min }}
+    - erddapy
+    - httpx
+    - pandas
+    - pandas-flavor
+    - stamina
+    - xarray
+
+tests:
+  - python:
+      imports:
+        - gliderpy
+      pip_check: true
+      python_version:
+        - ${{ python_min }}.*
+        - "*"
+
+about:
+  summary: Glider Data Fetcher
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  homepage: https://pypi.org/project/gliderpy/
+
+extra:
+  recipe-maintainers:
+    - callumrollo
+    - ocefpaf
